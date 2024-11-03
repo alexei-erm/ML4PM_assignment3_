@@ -37,6 +37,7 @@ class Trainer:
         self.n_epochs = n_epochs
         self.criterion = criterion
         self.bestmodel_cnt = 0
+        self.losses4aggregation = {'train': [], 'eval': [], 'test': []}
         
         # adding time_stamp to model name to make sure the save models don't overwrite each other, 
         # you can customize your own model name with hyperparameters so that you can reload the model more easily
@@ -99,6 +100,11 @@ class Trainer:
             train_loss = self.train_epoch(train_loader)
             eval_loss = self.eval_epoch(eval_loader, split='eval')
             test_loss = self.eval_epoch(test_loader, split='test')
+
+            # added :)
+            self.losses4aggregation['train'].append(train_loss)
+            self.losses4aggregation['eval'].append(eval_loss)
+            self.losses4aggregation['test'].append(test_loss)
 
             if eval_loss < best_eval_loss:
                 best_eval_loss = eval_loss
