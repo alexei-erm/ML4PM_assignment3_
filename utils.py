@@ -15,6 +15,7 @@ LABELS = ['RUL']
 XS_VAR = ['T24', 'T30', 'T48', 'T50', 'P15', 'P2', 'P21', 'P24', 'Ps30', 'P40', 'P50', 'Nf', 'Nc', 'Wf']
 W_VAR = ['alt', 'Mach', 'TRA', 'T2']
 
+
 def seed_everything(seed: int):
     r"""Sets the seed for generating random numbers in PyTorch, numpy and
     Python.
@@ -160,3 +161,4 @@ def plot_test_rul_predictions(df_list, model_name='baseline', save=False, show=T
             plt.show()
         else:
             plt.close()
+
