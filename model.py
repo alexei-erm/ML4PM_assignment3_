@@ -40,7 +40,8 @@ class CNN(nn.Module):
                  n_hidden=50, 
                  n_layers=3,
                  dropout=0.,
-                 padding='same'):
+                 padding='same',
+                 use_batchnorm = False):
         """
         Args:
             n_features (int, optional): number of input features. Defaults to 18.
@@ -49,21 +50,25 @@ class CNN(nn.Module):
             n_k (int, optional): kernel size. Defaults to 10.
             n_hidden (int, optional): number of hidden neurons for regressor. Defaults to 50.
             n_layers (int, optional): number of convolution layers. Defaults to 5.
+            use_batchnorm (bool): whether to use batch normalization. Defaults to False.
         """
         super().__init__()
-        # TODO: implement model architecture
+        self.use_batchnorm = use_batchnorm
+        
         # List to store convolutional layers
         layers = []
         
-        # First Conv Layer (with batchnorm)
+        # First Conv Layer
         layers.append(nn.Conv1d(in_channels=in_channels, out_channels=n_ch, kernel_size=n_k, padding=padding))
-        layers.append(nn.BatchNorm1d(n_ch))
+        if use_batchnorm:
+            layers.append(nn.BatchNorm1d(n_ch))
         layers.append(nn.ReLU())
         
-        # Additional Conv Layers (with batchnorm)
+        # Additional Conv Layers
         for _ in range(1, n_layers):
             layers.append(nn.Conv1d(in_channels=n_ch, out_channels=n_ch, kernel_size=n_k, padding=padding))
-            layers.append(nn.BatchNorm1d(n_ch))
+            if use_batchnorm:
+                layers.append(nn.BatchNorm1d(n_ch))
             layers.append(nn.ReLU())
         
         # Combine the convolution layers into a sequential block
@@ -71,10 +76,12 @@ class CNN(nn.Module):
         
         # Flatten layer before passing to fully connected layer
         self.flatten = nn.Flatten()
-
+        
         # Fully connected layers (regressor)
         self.fc1 = nn.Linear(n_ch * window, n_hidden)
         self.dropout = nn.Dropout(dropout)
+        if use_batchnorm:
+            self.bn_fc = nn.BatchNorm1d(n_hidden)
         self.fc2 = nn.Linear(n_hidden, out_channels)
         
         # Initialize weights

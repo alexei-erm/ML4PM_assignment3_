@@ -11,7 +11,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader, Dataset, SubsetRandomSampler
 from sklearn.preprocessing import MinMaxScaler
 
-FOLDER = 'models_baseline'    # CHANGE FOR EACH BRANCH ACCORDINGLY TO MODEL DURING TRAINING
+FOLDER = 'models'   
 LABELS = ['RUL']
 XS_VAR = ['T24', 'T30', 'T48', 'T50', 'P15', 'P2', 'P21', 'P24', 'Ps30', 'P40', 'P50', 'Nf', 'Nc', 'Wf']
 W_VAR = ['alt', 'Mach', 'TRA', 'T2']
